@@ -1,9 +1,9 @@
 export enum GameTypes {
-  TRUTHORDARE,
-  CARDDRAWING,
-  HAVEYOUEVER,
-  WOULDYOURATHER,
-  MOODGUESS,
+  TRUTHORDARE = 'truth_or_dare',
+  CARDDRAWING = 'card_drawing',
+  HAVEYOUEVER = 'have_you_ever',
+  WOULDYOURATHER = 'would_you_rather',
+  MOODGUESS = 'mood_guess',
 }
 
 export type Metadata = {
@@ -11,42 +11,36 @@ export type Metadata = {
   updatedAt: Date;
 };
 
-export interface Player {
+export interface User {
   // id: string;
   name: string;
   session: Session;
+  // questions: Question[];
   // answers: Answer[];
 }
 
 export interface Session {
-  id: string;
-  host: Player;
-  players: Player[];
-  games: Game[];
+  code: string;
+  players: User[];
+  questions: Question[];
   metadata: Metadata
 }
 
-export interface Game {
-  // id: string;
-  type: GameTypes;
-  timer?: Date;
-  // sessions: Session[];
-  questions: Question[];
-  metadata: Metadata;
-}
-
 export interface Question {
-  // id: string;
-  // creator: Player;
-  // game: Game;
+  id: string;
+  type: GameTypes;
+  // owner: User;
   content: string;
-  // answers?: Answer[];
+  // sessions: Session[];
+  choices?: string[];
+  answers: Answer[];
   metadata: Metadata;
 }
 
 export interface Answer {
   // id: string;
-  owner: Player;
+  owner: User;
+  question: Question;
   content: string;
-  // question: Question;
+  metadata: Metadata;
 }
