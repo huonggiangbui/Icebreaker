@@ -1,5 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Delete, Post,  UseGuards } from '@nestjs/common';
 import { Tokens } from '../types/Tokens';
 import { CreateUserDto } from './dto/create-user';
 // import { Tokens } from '../types/Tokens';
