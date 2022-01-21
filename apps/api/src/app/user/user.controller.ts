@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { TheUser } from './user.decorator';
 import { User } from './user.entity';
+import { User as IUser } from '@icebreaker/shared-types';
 
 import { UserService } from './user.service';
 
@@ -13,8 +14,8 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post("users")
-  async register(@Body() body: CreateUserDto): Promise<void | Tokens> {
-    if (body.name) {
+  async register(@Body() body: CreateUserDto): Promise<void | Tokens | Tokens & IUser> {
+    if (body.code && body.name) {
       return this.userService.create(body)
     } else if (body.refresh_token) {
       return {

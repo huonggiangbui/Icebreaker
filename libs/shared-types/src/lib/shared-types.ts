@@ -12,9 +12,9 @@ export type Metadata = {
 };
 
 export interface User {
-  // id: string;
+  id: string;
   name: string;
-  session: Session;
+  // session: Session;
   // questions: Question[];
   // answers: Answer[];
 }

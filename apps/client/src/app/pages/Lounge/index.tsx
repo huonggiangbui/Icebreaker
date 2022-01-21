@@ -36,7 +36,6 @@ export default function Lounge() {
   useEffect(() => {
     axios.get(process.env['NX_API_URL'] + '/sessions/' + code)
       .then((res) => {
-        console.log(res.data)
         setSession(res.data);
       })
       .catch((err) => {
@@ -54,7 +53,7 @@ export default function Lounge() {
           </h1>
           <h1>Waiting for more players...</h1>
           <ShareComponent code={code} />
-          <Button
+          {/* <Button
             type="submit"
             fullWidth
             variant="contained"
@@ -63,7 +62,7 @@ export default function Lounge() {
             size="large"
           >
             START
-          </Button>
+          </Button> */}
         </>
         : <h1 style={{ color: "#d32f2f"}}>{error}</h1>
       }

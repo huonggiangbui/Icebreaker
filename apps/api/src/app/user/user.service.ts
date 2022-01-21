@@ -19,7 +19,7 @@ import { CreateUserDto } from './dto/create-user';
 import { v4 } from 'uuid';
 import { Tokens } from '../types/Tokens';
 import { SessionService } from '../session/session.service';
-import { Session } from '@icebreaker/shared-types';
+import { Session, User as IUser } from '@icebreaker/shared-types';
 
 export interface IPayload {
   id: string;
@@ -35,7 +35,7 @@ export class UserService {
     private readonly jwtService: JwtService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
-  async create(data: CreateUserDto): Promise<void | Tokens> {
+  async create(data: CreateUserDto): Promise<void | Tokens & IUser> {
     const session = await this.sessionService.findByCode(data.code);
 
     if (await this.doesUserExist(data.name, session)) {
@@ -59,12 +59,14 @@ export class UserService {
     const payload = await this.createPayload(newUser);
   
     return {
+      id: newUser.id,
+      name: newUser.name,
       access_token: await this.createAccessToken(payload),
       refresh_token: await this.createRefreshToken(newUser),
     };
   }
 
-  async doesUserExist(name: string, session: Session): Promise<any> {
+  async doesUserExist(name: string, session: Session): Promise<boolean> {
     const user = await this.userRepository.findOne({name: name, session: session})
     return user ? true : false;
   }

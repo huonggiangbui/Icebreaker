@@ -1,7 +1,8 @@
+import { User } from "@icebreaker/shared-types";
 import { Button, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp({ setCurrentUser }: { setCurrentUser: Dispatch<SetStateAction<User | undefined>>}) {
   const classes = useStyles();
   const { code } = useParams();
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ export default function SignUp() {
       .then((res) => {
         localStorage.setItem("refresh_token", res.data.refresh_token);
         localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("expired_in", JSON.stringify(Date.now() + 60 * 60 * 1000));
+        setCurrentUser({id: res.data.id, name: res.data.name})
         navigate(`../room/${code}`)
       })
       .catch((err) => {
