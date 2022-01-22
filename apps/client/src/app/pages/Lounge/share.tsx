@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
 
 export default function ShareComponent({code}: {code: string}) {
   const classes = useStyles();
-  const sharedLink = `${window.location.origin}/room/${code}/signup`;
+  const sharedLink = `${window.location.origin}/#/room/${code}/signup`;
   const [copiedText, setCopiedText] = useState<string>();
 
   const onCopy = () => {
