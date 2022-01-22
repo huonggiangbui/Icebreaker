@@ -92,7 +92,7 @@ export default function Lounge() {
             color="primary"
             className={classes.button}
             size="large"
-            disabled={!isHost && session.questions.length > 0}
+            disabled={isHost ? false : session.questions.length === 0}
           >
             START
           </Button>
