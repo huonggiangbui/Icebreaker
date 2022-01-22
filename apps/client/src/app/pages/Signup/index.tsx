@@ -2,8 +2,9 @@ import { User } from "@icebreaker/shared-types";
 import { Button, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { UserContext } from "../../contexts/user";
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -31,10 +32,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function SignUp({ setCurrentUser }: { setCurrentUser: Dispatch<SetStateAction<User | undefined>>}) {
+export default function SignUp() {
   const classes = useStyles();
   const { code } = useParams();
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
@@ -46,20 +48,23 @@ export default function SignUp({ setCurrentUser }: { setCurrentUser: Dispatch<Se
     e.preventDefault();
     axios.post(process.env['NX_API_URL'] + '/users', {code, name})
       .then((res) => {
+        localStorage.setItem('id', res.data.id);
         localStorage.setItem("refresh_token", res.data.refresh_token);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("expired_in", JSON.stringify(Date.now() + 60 * 60 * 1000));
-        setCurrentUser({id: res.data.id, name: res.data.name})
-        navigate(`../room/${code}`)
+        if (setUser) {
+          setUser({id: res.data.id, name: res.data.name})
+        }
+        navigate(`../room/${code}`, { replace: true });
       })
       .catch((err) => {
         console.log(err)
         setError("Error occurs when trying to join as a player. Please try again")
       })
-  }
-
-  return (
-    <div className={`container ${classes.main}`}>
+    }
+    
+    return (
+      <div className={`container ${classes.main}`}>
       <h1>
         <span>Welcome to Icebreaking Room!</span> Let's get started! 🎯
       </h1>

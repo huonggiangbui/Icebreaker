@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     textDecoration: "none",
     color: "white",
     fontSize: "20px",
-    marginLeft: useTheme().spacing(20),
+    marginLeft: useTheme().spacing(5),
     "&:hover": {
       color: "yellow",
       borderBottom: "1px solid white",

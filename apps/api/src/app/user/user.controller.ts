@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Post,  UseGuards } from '@nestjs/common';
 import { Tokens } from '../types/Tokens';
 import { CreateUserDto } from './dto/create-user';
-// import { Tokens } from '../types/Tokens';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { TheUser } from './user.decorator';
 import { User } from './user.entity';

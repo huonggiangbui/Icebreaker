@@ -16,10 +16,10 @@ export class Session implements ISession {
   @PrimaryColumn({unique: true})
   code: string;
 
-  @OneToMany(() => User, (u) => u.session, { onDelete: "RESTRICT", lazy: true })
+  @OneToMany(() => User, (u) => u.session, { onDelete: "CASCADE", lazy: true, cascade: true })
   players: User[];
 
-  @ManyToMany(() => Question, (q) => q.sessions, { onDelete: "CASCADE", lazy: true, cascade: ["insert", "update"] })
+  @ManyToMany(() => Question, (q) => q.sessions, { onDelete: "RESTRICT", lazy: true, cascade: ["insert", "update"] })
   @JoinTable()
   questions: Question[];
 

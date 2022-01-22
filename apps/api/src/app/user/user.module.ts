@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule, forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -13,6 +13,7 @@ import { SessionModule } from '../session/session.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    forwardRef(() => SessionModule),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -27,7 +28,6 @@ import { SessionModule } from '../session/session.module';
       },
       connect_timeout: 15000,
     }),
-    SessionModule
   ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],

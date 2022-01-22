@@ -1,8 +1,8 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { GameTypes, Session } from '@icebreaker/shared-types';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../user/guards/jwt-auth.guard';
 import { TheUser } from '../user/user.decorator';
 import { User } from '../user/user.entity';
-import { Session } from './session.entity';
 
 import { SessionService } from './session.service';
 
@@ -17,7 +17,13 @@ export class SessionController {
 
   @Get("sessions/:code")
   async getRoom(@Param('code') code: string): Promise<Session> {
-    return this.sessionService.findByCode(code)
+    return this.sessionService.getSession(code)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('sessions/:code')
+  update(@TheUser() host: User, @Param('code') code: string, @Body() body: { type: GameTypes }) {
+    return this.sessionService.update(host, code, body.type)
   }
 
   @UseGuards(JwtAuthGuard)

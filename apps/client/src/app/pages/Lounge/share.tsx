@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const useStyles = makeStyles(() => ({
   subheading: {
-    color: "black !important",
     fontSize: useTheme().typography.pxToRem(15),
     fontWeight: useTheme().typography.fontWeightRegular,
   },
@@ -31,11 +30,11 @@ export default function ShareComponent({code}: {code: string}) {
         }
         placement="top"
       >
-        <Button onClick={onCopy}>
+        <Button onClick={onCopy} style={{ textTransform: "lowercase" }}>
           {code}
         </Button>
       </Tooltip>
-      Let's share to your friends to play together!
+      Let's share it with your friends to play together!
     </Typography>
   )
 }

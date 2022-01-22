@@ -1,5 +1,6 @@
 import {
   CACHE_MANAGER,
+  forwardRef,
   Inject,
   Injectable,
   Logger,
@@ -30,6 +31,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @Inject(forwardRef(() => SessionService))
     private sessionService: SessionService,
     private readonly connection: Connection,
     private readonly jwtService: JwtService,
@@ -70,20 +72,7 @@ export class UserService {
     const user = await this.userRepository.findOne({name: name, session: session})
     return user ? true : false;
   }
-
-  // findAll(options?: FindManyOptions<User>): Promise<User[]> {
-  //   return this.userRepository.find(options);
-  // }
-
-  // async getProfile(id: string): Promise<Omit<User, "email" | "password" | "refresh_tokens">>{
-  //   const { email, password, refresh_tokens, ...rest } = await createQueryBuilder(User)
-  //     .leftJoinAndSelect("User.memes", "Meme")
-  //     .where("User.id = :id", { id: id })
-  //     .getOne() as User;
-
-  //   return rest;
-  // }
-
+  
   async findById(
     id: string,
     options?: FindOneOptions<User>

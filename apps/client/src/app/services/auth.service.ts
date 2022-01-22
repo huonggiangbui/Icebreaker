@@ -21,7 +21,6 @@ export function isAuthenticated() {
 export function authHeader() {
   if (isAuthenticated()) {
     return { Authorization: `Bearer ${localStorage.getItem('access_token')}` };
-  } else {
-    return {};
   }
+  return { Authorization: ""};
 }

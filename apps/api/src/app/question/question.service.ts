@@ -1,15 +1,11 @@
 import { GameTypes } from '@icebreaker/shared-types';
 import {
-  Inject,
   Injectable,
   Logger,
-  NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Connection,
-  createQueryBuilder,
   FindManyOptions,
   FindOneOptions,
   Repository,
@@ -31,7 +27,7 @@ export class QuestionService {
     private questionRepository: Repository<Question>,
     @InjectRepository(Session)
     private sessionRepository: Repository<Session>,
-    private userService: UserService,
+    private readonly userService: UserService,
     private readonly connection: Connection,
   ) {}
   async create(host: User, data: CreateQuestionDto): Promise<void | Question> {
@@ -63,7 +59,7 @@ export class QuestionService {
 
   async findAllByType(type: GameTypes, options?: FindManyOptions<Question>): Promise<Question[]> {
     const admin = await this.userService.findById(process.env.ADMIN_ID);
-    return Promise.resolve(await admin.questions).then(async (questions) => {
+    return Promise.resolve(await admin.questions).then((questions) => {
       const filteredQuestion = questions.filter(q => q.type === type);
       return filteredQuestion
     })
@@ -85,19 +81,4 @@ export class QuestionService {
       throw new Error('Cannot find question with id: ' + id);
     }
   }
-
-  // async remove(user: User, code: string): Promise<void> {
-  //   const session = await this.sessionRepository.findOneOrFail(code);
-  //   if (this.isSessionHost(user, session)) {
-  //     await this.sessionRepository.delete(code);
-  //     return
-  //   }
-  //   throw new UnauthorizedException;
-  // }
-
-  // async isSessionHost(user: User, session: Session): Promise<boolean> {
-  //   const sessionHost = (await session).players[0]
-  //   return sessionHost == user
-  // }
-
 }

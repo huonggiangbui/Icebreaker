@@ -4,6 +4,7 @@ export enum GameTypes {
   HAVEYOUEVER = 'have_you_ever',
   WOULDYOURATHER = 'would_you_rather',
   MOODGUESS = 'mood_guess',
+  LOVEBOMB = 'love_bomb'
 }
 
 export type Metadata = {
@@ -14,31 +15,23 @@ export type Metadata = {
 export interface User {
   id: string;
   name: string;
-  // session: Session;
-  // questions: Question[];
-  // answers: Answer[];
 }
 
 export interface Session {
-  code: string;
   players: User[];
   questions: Question[];
-  metadata: Metadata
 }
 
 export interface Question {
   id: string;
   type: GameTypes;
-  // owner: User;
   content: string;
-  // sessions: Session[];
   choices?: string[];
   answers: Answer[];
   metadata: Metadata;
 }
 
 export interface Answer {
-  // id: string;
   owner: User;
   question: Question;
   content: string;
